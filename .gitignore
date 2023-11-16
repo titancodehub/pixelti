@@ -1,0 +1,7 @@
+__pycache__
+venv
+dist
+*.spec
+*.jpg
+*.jpeg
+build
