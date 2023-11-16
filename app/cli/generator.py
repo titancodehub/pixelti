@@ -48,6 +48,6 @@ class PixelArtGeneratorApp:
 
   def __isHttpUrl(self, url: str):
     method = url.split(':')[0]
-    if method in set('http', 'https'):
+    if method in ('http', 'https'):
       return True
     return False

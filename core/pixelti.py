@@ -1,3 +1,5 @@
+from statistics import mode
+
 import numpy as np
 from PIL import Image
 
@@ -31,24 +33,23 @@ class Pixelti:
     for i in range(self.compressedH):
       for j in range(self.compressedW):
         offset1 = i * self.pixelSize
-        sumR = 0
-        sumG = 0
-        sumB = 0
+        listR = []
+        listG = []
+        listB = []
         # compress pixelSize x pixelSize into one pixel
         for k in range(offset1, offset1 + self.pixelSize):
           offset2 = j * self.pixelSize
           for l in range(offset2, offset2 + self.pixelSize):
-            sumR += self.img[k][l][0]
-            sumG += self.img[k][l][1]
-            sumB += self.img[k][l][2]
-        rgbAvg = [round(sumR/area, 0), round(sumG/area, 0), round(sumB/area, 0)]
-
+            listR.append(self.img[k][l][0])
+            listG.append(self.img[k][l][1])
+            listB.append(self.img[k][l][2])
+          newColor = [mode(listR), mode(listG), mode(listB)]
         # restore compressed image to original size
         # by applying the same rgbAvg to the original image
         for m in range(offset1, offset1 + self.pixelSize):
           offset2 = j * self.pixelSize
           for n in range(offset2, offset2 + self.pixelSize):
-            newImage[m][n] = rgbAvg
+            newImage[m][n] = newColor
 
     res = Image.fromarray(newImage)
     return res
