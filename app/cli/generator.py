@@ -1,9 +1,11 @@
-from PIL import Image
-from core.pixelti import Pixelti
-from core.display import ShellPixel
-from urllib.request import urlretrieve
 import os
 import uuid
+from urllib.request import urlretrieve
+
+from PIL import Image
+
+from core.display import ShellPixel
+from core.pixelti import Pixelti
 
 
 class PixelArtGeneratorApp:
@@ -29,7 +31,7 @@ class PixelArtGeneratorApp:
       pixelArt.save(name)
 
     pix = ShellPixel()
-    pixelArt.thumbnail((60, pixelti.imgH * (60 / pixelti.imgW)), resample=Image.HAMMING)
+    pixelArt.thumbnail((60, pixelti.imgH * (60 / pixelti.imgW)), resample=Image.Resampling.HAMMING)
     for i in range(pixelArt.size[1]):
       for j in range(pixelArt.size[0]):
         pix.put(pixelArt.getpixel((j, i)))
@@ -46,6 +48,6 @@ class PixelArtGeneratorApp:
 
   def __isHttpUrl(self, url: str):
     method = url.split(':')[0]
-    if(method == 'http' or method == 'https'):
+    if method in set('http', 'https'):
       return True
     return False

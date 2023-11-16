@@ -1,10 +1,6 @@
 import typer
 from typing_extensions import Annotated
 from app.cli.generator import PixelArtGeneratorApp
-import multiprocessing
-# disable multiprocessiong
-multiprocessing.set_start_method('forkserver', force=True)
-multiprocessing.freeze_support()
 
 
 app = typer.Typer()
@@ -21,4 +17,3 @@ def main(
 
 if __name__ == "__main__":
   app()
-  typer.Exit()
