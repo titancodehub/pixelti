@@ -6,7 +6,7 @@ import validators
 from PIL import Image
 
 from core.display import ShellPixel
-from core.pallete import BOF, Pallette
+from core.pallete import BOF, Pallette, PalletteManager
 from core.pixelti import Pixelti
 
 
@@ -24,12 +24,22 @@ def openImage(url: str) -> Image.Image:
       return getFromInternet(url)
     return getFromLocal(url)
 
-def handleGeneratePixelti(imageUrl: str, pixelSize: int, save: bool, fileName: str = str(uuid.uuid4())+'.jpg'):
+def handleGeneratePixelti(
+      imageUrl: str,
+      pixelSize: int,
+      save: bool,
+      fileName: str = str(uuid.uuid4())+'.jpg',
+      pallette: list = None,
+      samplingMethod: str = 'median'
+    ):
     image = openImage(imageUrl)
-    pallette = Pallette(BOF)
+    palletteManager = PalletteManager()
+    if pallette is not None:
+      pallette = palletteManager.getPallette(pallette)
     pixelti = Pixelti(pallette)
     pixelti.setPixelSize(pixelSize)
     pixelti.setImage(image)
+    pixelti.setSamplingMethod(samplingMethod)
     pixelArt = pixelti.generate()
 
     if save:
