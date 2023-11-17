@@ -5,10 +5,11 @@ from urllib.request import urlretrieve
 from PIL import Image
 
 from core.display import ShellPixel
+from core.pallete import BOF, Pallette
 from core.pixelti import Pixelti
 
 
-class PixelArtGeneratorApp:
+class PixelArtHandlerApp:
   image: Image.Image
   def openImage(self, url: str):
     if(self.__isHttpUrl(url)):
@@ -21,7 +22,8 @@ class PixelArtGeneratorApp:
     self.pixelSize = pixelSize
 
   def run(self, shouldSave = False, fileName: str = None):
-    pixelti = Pixelti()
+    pallette = Pallette(BOF)
+    pixelti = Pixelti(pallette)
     pixelti.setPixelSize(self.pixelSize)
     pixelti.setImage(self.image)
     pixelArt = pixelti.generate()

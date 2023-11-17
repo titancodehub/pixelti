@@ -3,8 +3,11 @@ from statistics import mode
 import numpy as np
 from PIL import Image
 
+from core.pallete import Pallette
+
 
 class Pixelti:
+  colorPallette: Pallette = None
   img: np.ndarray
   imgW: int
   imgH: int
@@ -13,6 +16,9 @@ class Pixelti:
   compressedW: int
   compressedH: int
   pixelSize: int = 7
+
+  def __init__(self, colorPallette: Pallette = None):
+    self.colorPallette = colorPallette
 
   def setImage(self, img: Image.Image):
     self.img = np.array(img)
@@ -23,13 +29,12 @@ class Pixelti:
   def setPixelSize(self, pixelSize: int):
     self.pixelSize = pixelSize
 
+  def setColorPallette(self, colorPallette: Pallette):
+    self.colorPallette = colorPallette
+
   def generate(self) -> Image.Image:
     i = 0
-    area = self.pixelSize * self.pixelSize
-
     newImage  = np.zeros(shape=(self.imgH, self.imgW, 3), dtype=np.uint8)
-    thumbnail = np.zeros(shape = (self.imgH * (600//self.imgW), 600), dtype=np.uint8)
-
     for i in range(self.compressedH):
       for j in range(self.compressedW):
         offset1 = i * self.pixelSize
@@ -43,7 +48,11 @@ class Pixelti:
             listR.append(self.img[k][l][0])
             listG.append(self.img[k][l][1])
             listB.append(self.img[k][l][2])
+
           newColor = [mode(listR), mode(listG), mode(listB)]
+          if self.colorPallette is not None:
+            newColor = self.colorPallette.translateColor(newColor)
+
         # restore compressed image to original size
         # by applying the same rgbAvg to the original image
         for m in range(offset1, offset1 + self.pixelSize):
@@ -51,5 +60,4 @@ class Pixelti:
           for n in range(offset2, offset2 + self.pixelSize):
             newImage[m][n] = newColor
 
-    res = Image.fromarray(newImage)
-    return res
+    return Image.fromarray(newImage)

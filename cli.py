@@ -1,7 +1,7 @@
 import typer
 from typing_extensions import Annotated
-from app.cli.generator import PixelArtGeneratorApp
 
+from app.cli.handler import PixelArtHandlerApp
 
 app = typer.Typer()
 @app.command()
@@ -10,10 +10,10 @@ def main(
   pixelSize:Annotated[int, typer.Option()] = 7,
   save: Annotated[bool, typer.Option()] = False,
   fileName: Annotated[str, typer.Option()] = None):
-  generator = PixelArtGeneratorApp()
-  generator.openImage(image)
-  generator.setPixelSize(pixelSize)
-  generator.run(save, fileName)
+  handler = PixelArtHandlerApp()
+  handler.openImage(image)
+  handler.setPixelSize(pixelSize)
+  handler.run(save, fileName)
 
 if __name__ == "__main__":
   app()
