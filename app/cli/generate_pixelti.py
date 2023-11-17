@@ -30,7 +30,7 @@ def handleGeneratePixelti(imageUrl: str, pixelSize: int, save: bool, fileName: s
     pixelti = Pixelti(pallette)
     pixelti.setPixelSize(pixelSize)
     pixelti.setImage(image)
-    pixelArt = pixelti.generateInParalel()
+    pixelArt = pixelti.generate()
 
     if save:
       name = fileName if fileName else str(uuid.uuid4())+'.jpg'
