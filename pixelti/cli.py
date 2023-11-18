@@ -3,8 +3,8 @@ import time
 import typer
 from typing_extensions import Annotated
 
-from app.cli.generate_pixelti import handleGeneratePixelti
-from core.pallete import PalletteManager
+from pixelti import PalletteManager
+from pixelti.app.cli.generate_pixelti import handleGeneratePixelti
 
 app = typer.Typer()
 @app.command()

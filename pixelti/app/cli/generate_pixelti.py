@@ -5,9 +5,7 @@ from urllib.request import urlretrieve
 import validators
 from PIL import Image
 
-from core.display import ShellPixel
-from core.pallete import BOF, Pallette, PalletteManager
-from core.pixelti import Pixelti
+from pixelti import PalletteManager, Pixelti, ShellPixel
 
 
 def getFromInternet(url:str)->Image.Image:

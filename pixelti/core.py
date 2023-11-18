@@ -1,12 +1,11 @@
 import asyncio
-import time
 from statistics import mean, median, mode
 
 import numpy as np
 from PIL import Image
 
-from core.pallete import Pallette
-from lib.utils import createChunks
+from pixelti.lib.utils import createChunks
+from pixelti.pallette import Pallette
 
 
 class Pixelti:
@@ -83,9 +82,7 @@ class Pixelti:
     asyncio.gather(*[self.__generatePerChunk(task) for task in chunk])
 
   def generate(self) -> Image.Image:
-    start = time.time()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(self.__asyncTask())
     loop.close()
-    print("end", time.time() - start)
     return Image.fromarray(self.__outputArray)
