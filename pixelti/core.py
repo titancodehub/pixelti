@@ -81,8 +81,18 @@ class Pixelti:
     self.__outputArray = np.zeros(shape=(self.imgH, self.imgW, 3), dtype=np.uint8)
     asyncio.gather(*[self.__generatePerChunk(task) for task in chunk])
 
-  def generate(self) -> Image.Image:
+  def generateInParalel(self) -> Image.Image:
     loop = asyncio.get_event_loop()
     loop.run_until_complete(self.__asyncTask())
     loop.close()
+    return Image.fromarray(self.__outputArray)
+
+  def generate(self) -> Image.Image:
+    self.__outputArray = np.zeros(shape=(self.imgH, self.imgW, 3), dtype=np.uint8)
+    for i in range(self.compressedH):
+      for j in range(self.compressedW):
+        newColor = self.__compressPixel(i, j)
+        if self.colorPallette is not None:
+          newColor = self.colorPallette.translateColor(newColor)
+        self.__fillOriginalPixel(i, j, newColor)
     return Image.fromarray(self.__outputArray)
